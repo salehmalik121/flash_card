@@ -1,6 +1,6 @@
 class Flash {
-  final String qs;
-  final String ans;
+  final String front;
+  final String back;
 
-  Flash({required this.qs, required this.ans});
+  Flash({required this.front, required this.back});
 }

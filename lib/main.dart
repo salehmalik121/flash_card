@@ -1,6 +1,8 @@
 import 'package:flash_card/flashcard.dart';
 import 'package:flash_card/flashcard_view.dart';
+import 'package:flash_card/flutter.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,20 +17,20 @@ class Flashcards extends StatefulWidget {
 }
 
 class _FlashcardsState extends State<Flashcards> {
-  List _flashcards = [
-    Flash(qs: "Which programming language Flutter uses?", ans: "Dart"),
-    Flash(qs: "Is flutter good?", ans: "Flutter is awsome"),
-    Flash(
-        qs: "What is flutter?",
-        ans:
-            "Flutter is an open-source UI software development kit created by Google. It is used to develop cross platform applications for Android, iOS, Linux, Mac, Windows, Google Fuchsia, and the web from a single codebase.")
+  List _flashData = [
+    Flash(front: "Which programming language flutter Uses?", back: "Dart"),
+    Flash(front: "Is flutter good ?", back: "Flutter is awsome"),
+    Flash(front: "what is flutter", back: FlutterData.flutter),
   ];
   int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    print(_flashcards.length);
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          title: Text('Flashcards'),
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -37,21 +39,19 @@ class _FlashcardsState extends State<Flashcards> {
                 width: 400,
                 height: 300,
                 child: FlipCard(
-                    direction: FlipDirection.HORIZONTAL,
-                    front: FlashCardView(text: _flashcards[currentIndex].qs),
-                    back: FlashCardView(text: _flashcards[currentIndex].ans)),
+                  front: FlashcardsView(text: _flashData[currentIndex].front),
+                  back: FlashcardsView(text: _flashData[currentIndex].back),
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   OutlinedButton(
-                    onPressed: decrement,
-                    child: Icon(Icons.arrow_back_sharp),
+                    onPressed: back,
+                    child: Icon(CupertinoIcons.back),
                   ),
                   OutlinedButton(
-                    onPressed: incriment,
-                    child: Icon(Icons.arrow_forward_sharp),
-                  ),
+                      onPressed: next, child: Icon(CupertinoIcons.forward))
                 ],
               )
             ],
@@ -61,23 +61,17 @@ class _FlashcardsState extends State<Flashcards> {
     );
   }
 
-  incriment() {
+  next() {
     setState(() {
-      if (currentIndex == _flashcards.length - 1) {
-        currentIndex = 0;
-      } else {
-        currentIndex++;
-      }
+      currentIndex =
+          currentIndex == _flashData.length - 1 ? 0 : currentIndex + 1;
     });
   }
 
-  decrement() {
+  back() {
     setState(() {
-      if (currentIndex == 0) {
-        currentIndex = _flashcards.length - 1;
-      } else {
-        currentIndex--;
-      }
+      currentIndex =
+          currentIndex == 0 ? _flashData.length - 1 : currentIndex - 1;
     });
   }
 }
